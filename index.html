@@ -178,21 +178,6 @@
             -webkit-backdrop-filter: blur(22px);
         }
 
-        /* نورافکن موس روی کارت‌ها (div.spot با JS تزریق می‌شود) */
-        .spot {
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity .35s;
-            background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(125, 175, 255, .14), transparent 62%)
-        }
-
-        .card:hover .spot {
-            opacity: 1
-        }
-
         /* floating background lights */
         .orb {
             position: fixed;
@@ -1615,44 +1600,6 @@
             border-radius: inherit
         }
 
-        /* نشانگر موس سفارشی */
-        html.custom-cursor,
-        html.custom-cursor * {
-            cursor: none !important
-        }
-
-        .cursor-dot,
-        .cursor-ring {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 99;
-            pointer-events: none;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: difference;
-            opacity: 0
-        }
-
-        .cursor-dot {
-            width: 7px;
-            height: 7px;
-            background: #fff
-        }
-
-        .cursor-ring {
-            width: 38px;
-            height: 38px;
-            border: 1.5px solid rgba(255, 255, 255, .75);
-            transition: width .25s, height .25s, background .25s
-        }
-
-        .cursor-ring.hot {
-            width: 58px;
-            height: 58px;
-            background: rgba(255, 255, 255, .08)
-        }
-
         /* ظاهر شدن تیترها با wipe و blur (سازگار با شکل‌دهی حروف فارسی) */
         html.js .bento.in .intro h1 {
             animation: textWipe 1.1s cubic-bezier(.2, .7, .2, 1) .35s both
@@ -1698,15 +1645,8 @@
                 transform: none
             }
 
-            .preloader,
-            .cursor-dot,
-            .cursor-ring {
+            .preloader {
                 display: none !important
-            }
-
-            html.custom-cursor,
-            html.custom-cursor * {
-                cursor: auto !important
             }
         }
     </style>
@@ -1827,10 +1767,10 @@
                 </article>
 
                 <article class="tile learn glass card" style="--t:7">
-                    <div class="badge"><svg class="icon" aria-hidden="true"><use href="#i-mobile"/></svg></div>
-                    <span class="label" style="font-size:12px;color:var(--muted)"><span class="pulse-dot"></span> در حال یادگیری</span>
-                    <b style="font-size:22px">Flutter</b>
-                    <small style="font-size:11px;color:#7f8ba0">مسیر بعدی: اپلیکیشن موبایل</small>
+                    <div class="badge"><svg class="icon" aria-hidden="true"><use href="#i-wp"/></svg></div>
+                    <span class="label" style="font-size:12px;color:var(--muted)"><span class="pulse-dot"></span> تمرکز فعلی</span>
+                    <b style="font-size:22px">WordPress</b>
+                    <small style="font-size:11px;color:#7f8ba0">توسعه سایت، قالب و سئو</small>
                 </article>
 
                 <article class="tile avail glass card" style="--t:8">
@@ -2217,7 +2157,6 @@
         document.getElementById("year").textContent = new Date().getFullYear();
 
         const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const finePointer = matchMedia("(pointer:fine)").matches;
         const faDigits = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
 
         // Mobile menu
@@ -2326,50 +2265,6 @@
             requestAnimationFrame(fill);
         } else if (bento) {
             bento.classList.add("in", "settled");
-        }
-
-        // تیلت سه‌بعدی کاشی‌های بنتو + دکمه‌های مغناطیسی + نشانگر سفارشی
-        if (!reduced && finePointer && bento) {
-            bento.querySelectorAll(".tile").forEach(tile => {
-                tile.addEventListener("mousemove", e => {
-                    if (!bento.classList.contains("settled")) return;
-                    const r = tile.getBoundingClientRect();
-                    const x = (e.clientX - r.left) / r.width - .5;
-                    const y = (e.clientY - r.top) / r.height - .5;
-                    tile.style.transform = "perspective(900px) rotateX(" + (-y * 6).toFixed(2) + "deg) rotateY(" + (x * 6).toFixed(2) + "deg)";
-                });
-                tile.addEventListener("mouseleave", () => tile.style.transform = "");
-            });
-
-            document.querySelectorAll(".btn, .social").forEach(btn => {
-                btn.addEventListener("mousemove", e => {
-                    const r = btn.getBoundingClientRect();
-                    btn.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .18).toFixed(1) + "px, " + ((e.clientY - r.top - r.height / 2) * .28).toFixed(1) + "px)";
-                });
-                btn.addEventListener("mouseleave", () => btn.style.transform = "");
-            });
-
-            document.documentElement.classList.add("custom-cursor");
-            const dot = document.createElement("div");
-            const ring = document.createElement("div");
-            dot.className = "cursor-dot";
-            ring.className = "cursor-ring";
-            dot.setAttribute("aria-hidden", "true");
-            ring.setAttribute("aria-hidden", "true");
-            document.body.append(dot, ring);
-            let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-            addEventListener("mousemove", e => {
-                mx = e.clientX; my = e.clientY;
-                dot.style.opacity = ring.style.opacity = 1;
-                dot.style.left = mx + "px"; dot.style.top = my + "px";
-                ring.classList.toggle("hot", !!e.target.closest("a, button, .card, .tile"));
-            });
-            document.documentElement.addEventListener("mouseleave", () => dot.style.opacity = ring.style.opacity = 0);
-            (function follow() {
-                rx += (mx - rx) * .9; ry += (my - ry) * .9;
-                ring.style.left = rx + "px"; ring.style.top = ry + "px";
-                requestAnimationFrame(follow);
-            })();
         }
     </script>
 </body>
