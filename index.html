@@ -1428,6 +1428,256 @@
                 text-align: center
             }
         }
+
+        @property --a {
+            syntax: "<angle>";
+            initial-value: 0deg;
+            inherits: false
+        }
+
+        /* حاشیه گرادیانی چرخان روی کاشی‌های ویژه */
+        .tile.glow::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: conic-gradient(from var(--a), rgba(110, 169, 255, 0) 0%, rgba(110, 169, 255, .75) 12%, rgba(155, 124, 255, .5) 22%, rgba(110, 169, 255, 0) 34%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            animation: borderSpin 5s linear infinite;
+            pointer-events: none;
+            z-index: 2
+        }
+
+        @keyframes borderSpin {
+            to {
+                --a: 360deg
+            }
+        }
+
+        /* ورود پلکانی کاشی‌های بنتو */
+        html.js .bento:not(.in)>* {
+            opacity: 0;
+            transform: translateY(30px) scale(.98)
+        }
+
+        html.js .bento.in>* {
+            animation: tileIn .8s cubic-bezier(.2, .7, .2, 1) both;
+            animation-delay: calc(var(--t, 0) * 90ms)
+        }
+
+        html.js .bento.settled>* {
+            animation: none;
+            transition: transform .25s ease, box-shadow .3s
+        }
+
+        @keyframes tileIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(.98)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* اوربهای شناور متحرک */
+        .orb {
+            animation: drift 22s ease-in-out infinite alternate
+        }
+
+        .orb.two {
+            animation-duration: 27s;
+            animation-delay: -8s
+        }
+
+        .orb.three {
+            animation-duration: 19s;
+            animation-delay: -14s
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0) scale(1)
+            }
+
+            50% {
+                transform: translate(60px, -50px) scale(1.15)
+            }
+
+            100% {
+                transform: translate(-40px, 40px) scale(.95)
+            }
+        }
+
+        /* مارکی بزرگ توخالی */
+        .big-marquee {
+            overflow: hidden;
+            direction: ltr;
+            padding: 34px 0 6px;
+            mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent)
+        }
+
+        .big-track {
+            display: flex;
+            gap: 40px;
+            width: max-content;
+            align-items: baseline;
+            animation: scroll 46s linear infinite reverse
+        }
+
+        .big-track span {
+            font-size: clamp(58px, 9vw, 128px);
+            font-weight: 900;
+            white-space: nowrap;
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, .15);
+            letter-spacing: -2px
+        }
+
+        .big-track span.fill {
+            color: rgba(160, 200, 255, .07);
+            -webkit-text-stroke: 0
+        }
+
+        /* ساعت زنده */
+        .clock {
+            font-size: 11px;
+            color: #7f8ba0;
+            font-variant-numeric: tabular-nums
+        }
+
+        /* پری‌لودر */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--bg);
+            display: grid;
+            place-items: center;
+            transition: transform .65s cubic-bezier(.7, 0, .3, 1), opacity .5s
+        }
+
+        .preloader.done {
+            transform: translateY(-100%);
+            opacity: .4;
+            pointer-events: none
+        }
+
+        .pre-inner {
+            text-align: center
+        }
+
+        .pre-mark {
+            width: 66px;
+            height: 66px;
+            margin: auto;
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(145deg, rgba(105, 169, 255, .3), rgba(155, 124, 255, .12));
+            border: 1px solid rgba(130, 180, 255, .3);
+            color: #dceaff;
+            font-weight: 800;
+            font-size: 24px;
+            box-shadow: 0 0 45px rgba(70, 140, 255, .25)
+        }
+
+        .pre-name {
+            margin-top: 14px;
+            font-weight: 800;
+            font-size: 15px;
+            color: #cfe0ff;
+            letter-spacing: 1px
+        }
+
+        .pre-bar {
+            width: 190px;
+            height: 3px;
+            border-radius: 99px;
+            background: #151d2e;
+            margin: 18px auto 0;
+            overflow: hidden
+        }
+
+        .pre-bar i {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(270deg, #6ea9ff, #9b7cff);
+            border-radius: inherit
+        }
+
+        /* نشانگر موس سفارشی */
+        html.custom-cursor,
+        html.custom-cursor * {
+            cursor: none !important
+        }
+
+        .cursor-dot,
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            pointer-events: none;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            opacity: 0
+        }
+
+        .cursor-dot {
+            width: 7px;
+            height: 7px;
+            background: #fff
+        }
+
+        .cursor-ring {
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid rgba(255, 255, 255, .75);
+            transition: width .25s, height .25s, background .25s
+        }
+
+        .cursor-ring.hot {
+            width: 58px;
+            height: 58px;
+            background: rgba(255, 255, 255, .08)
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .orb,
+            .big-track,
+            .marquee-track,
+            .tile.glow::before,
+            html.js .bento.in>* {
+                animation: none !important
+            }
+
+            html.js .bento:not(.in)>* {
+                opacity: 1;
+                transform: none
+            }
+
+            .preloader,
+            .cursor-dot,
+            .cursor-ring {
+                display: none !important
+            }
+
+            html.custom-cursor,
+            html.custom-cursor * {
+                cursor: auto !important
+            }
+        }
     </style>
 </head>
 
@@ -1487,8 +1737,8 @@
 
     <main id="home">
         <header class="container">
-            <div class="bento reveal">
-                <article class="tile intro glass card">
+            <div class="bento">
+                <article class="tile intro glass card glow" style="--t:1">
                     <span class="eyebrow"><span class="pulse"></span> در حال ساختن، یادگرفتن و بهتر شدن</span>
                     <h1><span class="gradient-text">محمد حسین خادمی</span></h1>
                     <p>
@@ -1502,29 +1752,29 @@
                     </div>
                 </article>
 
-                <article class="tile photo glass card">
+                <article class="tile photo glass card" style="--t:2">
                     <img src="assets/profile.webp" alt="محمد حسین خادمی" width="370" height="370">
                 </article>
 
-                <article class="tile stat glass card">
+                <article class="tile stat glass card" style="--t:3">
                     <span class="label"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg> تجربه کدنویسی</span>
-                    <b>+۷ سال</b>
+                    <b><span data-count="7" data-prefix="+" data-suffix=" سال">+۷ سال</span></b>
                     <small>از سال ۱۳۹۸</small>
                 </article>
 
-                <article class="tile stat glass card">
+                <article class="tile stat glass card" style="--t:4">
                     <span class="label"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> سن</span>
-                    <b>۱۸ سال</b>
+                    <b><span data-count="18" data-suffix=" سال">۱۸ سال</span></b>
                     <small>نسل زد؛ بچه‌ی کد و کنجکاوی</small>
                 </article>
 
-                <article class="tile stat glass card">
+                <article class="tile stat glass card" style="--t:5">
                     <span class="label"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg> محل زندگی</span>
                     <b>همدان</b>
-                    <small>ایران</small>
+                    <small>ایران — ساعت محلی <span id="clock" class="clock">--:--</span></small>
                 </article>
 
-                <article class="tile term glass card">
+                <article class="tile term glass card glow" style="--t:6">
                     <div class="window">
                         <div class="window-top">
                             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -1545,14 +1795,14 @@
                     </div>
                 </article>
 
-                <article class="tile learn glass card">
+                <article class="tile learn glass card" style="--t:7">
                     <div class="badge"><svg class="icon" aria-hidden="true"><use href="#i-mobile"/></svg></div>
                     <span class="label" style="font-size:12px;color:var(--muted)"><span class="pulse-dot"></span> در حال یادگیری</span>
                     <b style="font-size:22px">Flutter</b>
                     <small style="font-size:11px;color:#7f8ba0">مسیر بعدی: اپلیکیشن موبایل</small>
                 </article>
 
-                <article class="tile avail glass card">
+                <article class="tile avail glass card" style="--t:8">
                     <span class="eyebrow" style="font-size:12px"><span class="pulse"></span> آماده همکاری</span>
                     <p style="font-size:13px;color:var(--muted);line-height:1.9;margin:0">برای کارآموزی، پروژه یا همکاری در پروژه‌های وب در دسترس هستم.</p>
                     <a class="btn primary" style="padding:10px 16px;font-size:13px" href="#contact"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>بزن بریم</a>
@@ -1750,6 +2000,31 @@
             </div>
         </section>
 
+        <div class="big-marquee reveal" aria-hidden="true">
+            <div class="big-track">
+                <span>برنامه‌نویس</span>
+                <span class="fill">•</span>
+                <span>دانشجوی کامپیوتر</span>
+                <span class="fill">•</span>
+                <span>پایتون</span>
+                <span class="fill">•</span>
+                <span>وردپرس</span>
+                <span class="fill">•</span>
+                <span>فلاتر</span>
+                <span class="fill">•</span>
+                <span>برنامه‌نویس</span>
+                <span class="fill">•</span>
+                <span>دانشجوی کامپیوتر</span>
+                <span class="fill">•</span>
+                <span>پایتون</span>
+                <span class="fill">•</span>
+                <span>وردپرس</span>
+                <span class="fill">•</span>
+                <span>فلاتر</span>
+                <span class="fill">•</span>
+            </div>
+        </div>
+
         <section class="container reveal" id="experience">
             <div class="section-head">
                 <div>
@@ -1910,6 +2185,10 @@
         // سال میلادی برای فوتر
         document.getElementById("year").textContent = new Date().getFullYear();
 
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const finePointer = matchMedia("(pointer:fine)").matches;
+        const faDigits = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+
         // Mobile menu
         const navToggle = document.getElementById("navToggle");
         const navLinks = document.getElementById("navLinks");
@@ -1933,32 +2212,19 @@
         }, { threshold: .08 });
         document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 
-        // نوار پیشرفت اسکرول (با rAF)
+        // نوار پیشرفت اسکرول + پارالکس اورب‌ها (با rAF)
         const progress = document.querySelector(".progress");
+        const orbs = [...document.querySelectorAll(".orb")];
         let pRaf = null;
         addEventListener("scroll", () => {
             if (pRaf) return;
             pRaf = requestAnimationFrame(() => {
                 const max = document.documentElement.scrollHeight - innerHeight;
                 progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
+                if (!reduced) orbs.forEach((o, i) => o.style.translate = "0 " + scrollY * (-.05 - i * .025) + "px");
                 pRaf = null;
             });
         }, { passive: true });
-
-        // نورافکن موس روی کارت‌ها
-        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (!reduced && matchMedia("(pointer:fine)").matches) {
-            document.querySelectorAll(".card").forEach(card => {
-                const spot = document.createElement("div");
-                spot.className = "spot";
-                card.appendChild(spot);
-                card.addEventListener("mousemove", e => {
-                    const r = card.getBoundingClientRect();
-                    spot.style.setProperty("--mx", (e.clientX - r.left) + "px");
-                    spot.style.setProperty("--my", (e.clientY - r.top) + "px");
-                });
-            });
-        }
 
         // هایلایت لینک فعال منو
         const navAnchors = [...document.querySelectorAll(".nav-links a")];
@@ -1974,6 +2240,133 @@
             });
         }, { rootMargin: "-35% 0px -55% 0px" });
         document.querySelectorAll("main section[id]").forEach(s => secObserver.observe(s));
+
+        // ساعت زنده همدان
+        const clock = document.getElementById("clock");
+        if (clock) {
+            const fmt = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Tehran" });
+            const tick = () => clock.textContent = fmt.format(new Date());
+            tick();
+            setInterval(tick, 15000);
+        }
+
+        // افکت اسکرمبل (دیکود شدن) متن
+        const CHARS = "ابپتثجچحخدذرزسشصضطظعغفقکگلمنوهی";
+        function scramble(el) {
+            if (!el || reduced) return;
+            const finalText = el.textContent;
+            const t0 = performance.now(), dur = 950;
+            const step = now => {
+                const p = Math.min(1, (now - t0) / dur);
+                let out = "";
+                for (let i = 0; i < finalText.length; i++) {
+                    const ch = finalText[i];
+                    if (ch === " " || ch === "\u200c") { out += ch; continue; }
+                    out += (i / finalText.length) < p ? ch : CHARS[(Math.random() * CHARS.length) | 0];
+                }
+                el.textContent = out;
+                if (p < 1) requestAnimationFrame(step); else el.textContent = finalText;
+            };
+            requestAnimationFrame(step);
+        }
+        const h1Text = document.querySelector(".intro h1 .gradient-text");
+        document.querySelectorAll("main h2").forEach(h2 => {
+            new IntersectionObserver((e, o) => {
+                if (e[0].isIntersecting) { scramble(h2); o.disconnect(); }
+            }, { threshold: .6 }).observe(h2);
+        });
+
+        // شمارنده‌های متحرک آمار
+        document.querySelectorAll("[data-count]").forEach(el => {
+            new IntersectionObserver((e, o) => {
+                if (!e[0].isIntersecting) return;
+                o.disconnect();
+                const target = +el.dataset.count, pre = el.dataset.prefix || "", suf = el.dataset.suffix || "";
+                if (reduced) { el.textContent = pre + faDigits(target) + suf; return; }
+                const t0 = performance.now(), dur = 1100;
+                const step = now => {
+                    const p = Math.min(1, (now - t0) / dur), ease = 1 - Math.pow(1 - p, 3);
+                    el.textContent = pre + faDigits(Math.round(target * ease)) + suf;
+                    if (p < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+            }, { threshold: .5 }).observe(el);
+        });
+
+        // پری‌لودر + ورود پلکانی بنتو
+        const bento = document.querySelector(".bento");
+        if (!reduced && bento) {
+            const pl = document.createElement("div");
+            pl.className = "preloader";
+            pl.setAttribute("aria-hidden", "true");
+            pl.innerHTML = '<div class="pre-inner">' +
+                '<div class="pre-mark">&lt;/&gt;</div>' +
+                '<div class="pre-name">MHKH<span style="color:#72b0ff">.</span></div>' +
+                '<div class="pre-bar"><i></i></div>' +
+                '</div>';
+            document.body.appendChild(pl);
+            const bar = pl.querySelector(".pre-bar i");
+            const t0 = performance.now(), dur = 950;
+            const fill = now => {
+                const p = Math.min(1, (now - t0) / dur);
+                bar.style.width = p * 100 + "%";
+                if (p < 1) requestAnimationFrame(fill);
+                else {
+                    pl.classList.add("done");
+                    setTimeout(() => pl.remove(), 800);
+                    bento.classList.add("in");
+                    scramble(h1Text);
+                    setTimeout(() => bento.classList.add("settled"), 1900);
+                }
+            };
+            requestAnimationFrame(fill);
+        } else if (bento) {
+            bento.classList.add("in", "settled");
+        }
+
+        // تیلت سه‌بعدی کاشی‌های بنتو + دکمه‌های مغناطیسی + نشانگر سفارشی
+        if (!reduced && finePointer && bento) {
+            bento.querySelectorAll(".tile").forEach(tile => {
+                tile.addEventListener("mousemove", e => {
+                    if (!bento.classList.contains("settled")) return;
+                    const r = tile.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - .5;
+                    const y = (e.clientY - r.top) / r.height - .5;
+                    tile.style.transform = "perspective(900px) rotateX(" + (-y * 6).toFixed(2) + "deg) rotateY(" + (x * 6).toFixed(2) + "deg)";
+                });
+                tile.addEventListener("mouseleave", () => tile.style.transform = "");
+            });
+
+            document.querySelectorAll(".btn, .social").forEach(btn => {
+                btn.addEventListener("mousemove", e => {
+                    const r = btn.getBoundingClientRect();
+                    btn.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .18).toFixed(1) + "px, " + ((e.clientY - r.top - r.height / 2) * .28).toFixed(1) + "px)";
+                });
+                btn.addEventListener("mouseleave", () => btn.style.transform = "");
+            });
+
+            document.documentElement.classList.add("custom-cursor");
+            const dot = document.createElement("div");
+            const ring = document.createElement("div");
+            dot.className = "cursor-dot";
+            ring.className = "cursor-ring";
+            dot.setAttribute("aria-hidden", "true");
+            ring.setAttribute("aria-hidden", "true");
+            document.body.append(dot, ring);
+            let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+            addEventListener("mousemove", e => {
+                mx = e.clientX; my = e.clientY;
+                dot.style.opacity = ring.style.opacity = 1;
+                dot.style.left = mx + "px"; dot.style.top = my + "px";
+                ring.classList.toggle("hot", !!e.target.closest("a, button, .card, .tile"));
+            });
+            document.documentElement.addEventListener("mouseleave", () => dot.style.opacity = ring.style.opacity = 0);
+            (function follow() {
+                rx += (mx - rx) * .16; ry += (my - ry) * .16;
+                ring.style.left = rx + "px"; ring.style.top = ry + "px";
+                requestAnimationFrame(follow);
+            })();
+        }
     </script>
 </body>
 
