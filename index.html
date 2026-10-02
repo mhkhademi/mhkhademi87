@@ -2366,7 +2366,7 @@
             });
             document.documentElement.addEventListener("mouseleave", () => dot.style.opacity = ring.style.opacity = 0);
             (function follow() {
-                rx += (mx - rx) * .45; ry += (my - ry) * .45;
+                rx += (mx - rx) * .9; ry += (my - ry) * .9;
                 ring.style.left = rx + "px"; ring.style.top = ry + "px";
                 requestAnimationFrame(follow);
             })();
