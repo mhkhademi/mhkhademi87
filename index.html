@@ -354,6 +354,10 @@
             box-shadow: 0 14px 40px rgba(0, 0, 0, .45), 0 0 45px rgba(85, 160, 255, .14)
         }
 
+        .tile.exp { grid-area: exp }
+        .tile.age { grid-area: age }
+        .tile.loc { grid-area: loc }
+
         .tile.stat {
             display: flex;
             flex-direction: column;
@@ -1727,19 +1731,19 @@
                     <img src="assets/profile.webp" alt="محمد حسین خادمی" width="370" height="370">
                 </article>
 
-                <article class="tile stat glass card" style="--t:3">
+                <article class="tile stat glass card exp" style="--t:3">
                     <span class="label"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg> تجربه کدنویسی</span>
                     <b><span data-count="7" data-prefix="+" data-suffix=" سال">+۷ سال</span></b>
                     <small>از سال ۱۳۹۸</small>
                 </article>
 
-                <article class="tile stat glass card" style="--t:4">
+                <article class="tile stat glass card age" style="--t:4">
                     <span class="label"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> سن</span>
                     <b><span data-count="18" data-suffix=" سال">۱۸ سال</span></b>
                     <small>نسل زد؛ بچه‌ی کد و کنجکاوی</small>
                 </article>
 
-                <article class="tile stat glass card" style="--t:5">
+                <article class="tile stat glass card loc" style="--t:5">
                     <span class="label"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg> محل زندگی</span>
                     <b>همدان</b>
                     <small>ایران — ساعت محلی <span id="clock" class="clock">--:--</span></small>
@@ -1903,6 +1907,11 @@
                     <div class="tech-icon"><svg class="icon" aria-hidden="true"><use href="#i-mobile"/></svg></div>
                     <h3>Flutter</h3>
                     <div class="level">در حال یادگیری</div>
+                </article>
+                <article class="tech-card glass">
+                    <div class="tech-icon"><svg class="icon" aria-hidden="true"><use href="#i-seo"/></svg></div>
+                    <h3>OpenCV</h3>
+                    <div class="level">پروژه‌محور</div>
                 </article>
             </div>
         </section>
