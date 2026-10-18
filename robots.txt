@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mhkhademi.github.io/mhkhademi87/sitemap.xml
+Sitemap: https://mhkhademi87.ir/sitemap.xml
